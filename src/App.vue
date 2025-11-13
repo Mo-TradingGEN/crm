@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-4 md:p-8">
+  <div class="min-h-screen p-4 md:p-8 transition-all duration-300" :style="showResearchSidebar ? 'margin-right: 32rem' : ''">
     <div class="max-w-7xl mx-auto">
       <!-- Hero Title -->
       <div class="text-center mb-8">
@@ -1209,6 +1209,7 @@
 
     <!-- Floating Research Button -->
     <button
+      v-if="!showResearchSidebar"
       @click="showResearchSidebar = true"
       class="fixed right-6 top-1/2 -translate-y-1/2 bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-4 py-6 rounded-l-2xl shadow-2xl font-bold text-sm flex flex-col items-center gap-2 z-40 transition-all duration-300 hover:px-5 group border-2 border-purple-400/30"
     >
@@ -1225,36 +1226,29 @@
     <transition name="slide-right">
       <div
         v-if="showResearchSidebar"
-        class="fixed inset-0 z-50 overflow-hidden"
+        class="fixed right-0 top-0 h-screen w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl overflow-y-auto z-40 border-l-2 border-purple-500/30"
       >
-        <!-- Backdrop -->
-        <div
-          @click="showResearchSidebar = false"
-          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
-        ></div>
-        
-        <!-- Sidebar -->
-        <div class="absolute right-0 top-0 h-full w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl overflow-y-auto">
-          <!-- Header -->
-          <div class="sticky top-0 bg-slate-900/95 backdrop-blur border-b border-slate-700 p-6 flex items-center justify-between z-10">
-            <div class="flex items-center gap-3">
-              <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-              </svg>
-              <div>
-                <h2 class="text-2xl font-bold text-white">Research Manager</h2>
-                <p class="text-sm text-slate-400">Save and load your client research</p>
-              </div>
+        <!-- Header -->
+        <div class="sticky top-0 bg-slate-900/95 backdrop-blur border-b border-slate-700 p-6 flex items-center justify-between z-10">
+          <div class="flex items-center gap-3">
+            <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <div>
+              <h2 class="text-2xl font-bold text-white">Research Manager</h2>
+              <p class="text-sm text-slate-400">Save and load your client research</p>
             </div>
-            <button
-              @click="showResearchSidebar = false"
-              class="p-2 hover:bg-slate-800 rounded-lg transition text-slate-400 hover:text-white"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
           </div>
+          <button
+            @click="showResearchSidebar = false"
+            class="p-2 hover:bg-slate-800 rounded-lg transition text-slate-400 hover:text-white"
+            title="Close sidebar"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
 
           <!-- Content -->
           <div class="p-6 space-y-6">
@@ -2151,21 +2145,11 @@ Format: Subject line, then email body.`
 
 /* Slide-right animation for sidebar */
 .slide-right-enter-active, .slide-right-leave-active {
-  transition: all 0.3s ease-out;
-}
-.slide-right-enter-from {
-  opacity: 0;
-}
-.slide-right-leave-to {
-  opacity: 0;
-}
-.slide-right-enter-from > div:last-child,
-.slide-right-leave-to > div:last-child {
-  transform: translateX(100%);
-}
-.slide-right-enter-active > div:last-child,
-.slide-right-leave-active > div:last-child {
   transition: transform 0.3s ease-out;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
 }
 
 /* Vertical text for floating button */
