@@ -7,7 +7,13 @@
           Perfect Work in Perfect Way<br />
           <span class="text-blue-400">Wonderful Service for Wonderful Pay</span>
         </h1>
-        <p class="text-xl md:text-2xl text-slate-300 italic">How can I ask better questions?</p>
+        <p class="text-xl md:text-2xl text-slate-300 italic mb-2">How can I ask better questions?</p>
+        <p class="text-sm text-slate-400 flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+          Click the purple "Research" button on the right to answer them
+        </p>
       </div>
 
       <!-- Three Key Questions -->
@@ -215,6 +221,52 @@
           <p class="text-xs text-slate-400 mt-2">This information will be used to customize your outreach messages with AI</p>
         </div>
 
+        <!-- AI Knowledge Base -->
+        <div class="mb-6 bg-gradient-to-r from-purple-900/30 to-blue-900/30 border-2 border-purple-500/30 rounded-lg p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <div>
+                <h4 class="font-bold text-white">AI Knowledge Base</h4>
+                <p class="text-xs text-slate-400">Your story, STOA details, what makes you unique</p>
+              </div>
+            </div>
+            <button
+              @click="showKnowledgeBase = !showKnowledgeBase"
+              class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-semibold hover:bg-purple-700 transition"
+            >
+              {{ showKnowledgeBase ? 'Hide' : 'View Memory' }}
+            </button>
+          </div>
+          
+          <transition name="expand">
+            <div v-if="showKnowledgeBase" class="bg-slate-800/50 rounded-lg p-4 space-y-3">
+              <div class="text-xs text-green-400 font-semibold mb-2">✅ AI Memory Active - All customizations include this context</div>
+              <div class="space-y-2 text-xs">
+                <div class="bg-slate-900/50 p-3 rounded border-l-2 border-blue-500">
+                  <p class="text-blue-400 font-bold mb-1">Your Story</p>
+                  <p class="text-slate-300">{{ knowledgeBase.story }}</p>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded border-l-2 border-purple-500">
+                  <p class="text-purple-400 font-bold mb-1">What Makes You Unique</p>
+                  <p class="text-slate-300">{{ knowledgeBase.unique }}</p>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded border-l-2 border-green-500">
+                  <p class="text-green-400 font-bold mb-1">STOA Program</p>
+                  <p class="text-slate-300">{{ knowledgeBase.program }}</p>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded border-l-2 border-orange-500">
+                  <p class="text-orange-400 font-bold mb-1">Your 4-Step Framework</p>
+                  <p class="text-slate-300">{{ knowledgeBase.framework }}</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 italic mt-3">This context is automatically included in every AI-generated message to ensure authenticity and accuracy.</p>
+            </div>
+          </transition>
+        </div>
+
         <!-- AI Model Settings -->
         <div class="mb-6 bg-slate-900/50 border border-slate-600 rounded-lg p-4">
           <div class="flex items-center gap-3 mb-3">
@@ -230,11 +282,11 @@
                 v-model="selectedModel"
                 class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-sm focus:border-blue-500 focus:outline-none transition"
               >
-                <option value="qwen3-coder:30b">Qwen3 Coder 30B</option>
-                <option value="llama3.2">Llama 3.2</option>
-                <option value="qwen2.5">Qwen 2.5</option>
-                <option value="llama3.1">Llama 3.1</option>
-                <option value="qwen3">Qwen 3</option>
+                <option value="llama3.1:8b">Llama 3.1 8B (Fast)</option>
+                <option value="qwen2.5:7b">Qwen 2.5 7B (Fast)</option>
+                <option value="qwen3-coder:30b">Qwen3 Coder 30B (Slow, Best Quality)</option>
+                <option value="llama3.2:3b">Llama 3.2 3B</option>
+                <option value="qwen2.5:14b">Qwen 2.5 14B</option>
               </select>
             </div>
             <div>
@@ -877,7 +929,7 @@
           </div>
 
           <!-- Selected Persona Content -->
-          <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-6 md:p-8">
+          <div class="rounded-xl shadow-2xl p-6 md:p-8" :class="getPersonaBackground(personas[selectedPersona].color)">
             <div class="mb-6">
               <div class="flex items-center justify-between mb-4">
                 <div>
@@ -939,8 +991,38 @@
                 </div>
 
                 <!-- Message -->
-                <div class="mb-4 bg-slate-800 p-4 rounded-lg border border-slate-600">
-                  <p class="text-slate-200 text-lg leading-relaxed">{{ replaceNames(stage.message) }}</p>
+                <div 
+                  class="mb-4 p-4 rounded-lg border-2 relative transition-all duration-300"
+                  :class="aiCustomizedStages[`${selectedPersona}-${stage.stage}`] 
+                    ? 'bg-white border-purple-500' 
+                    : 'bg-slate-800 border-slate-600'"
+                >
+                  <!-- AI Badge -->
+                  <div v-if="aiCustomizedStages[`${selectedPersona}-${stage.stage}`]" class="absolute top-2 right-2">
+                    <div class="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                      </svg>
+                      AI Generated
+                    </div>
+                  </div>
+                  
+                  <!-- AI Processing Indicator -->
+                  <div v-if="isProcessing && processingStage === stage.stage" class="absolute inset-0 bg-blue-600/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                    <div class="bg-slate-900 px-6 py-3 rounded-lg border-2 border-blue-500 flex items-center gap-3">
+                      <svg class="w-6 h-6 animate-spin text-blue-400" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span class="text-white font-semibold">AI Customizing...</span>
+                    </div>
+                  </div>
+                  <p 
+                    class="text-lg leading-relaxed"
+                    :class="aiCustomizedStages[`${selectedPersona}-${stage.stage}`] 
+                      ? 'text-slate-900' 
+                      : 'text-slate-200'"
+                  >{{ replaceNames(stage.message) }}</p>
                 </div>
 
                 <!-- Dos and Don'ts -->
@@ -1076,7 +1158,8 @@
           <div
             v-for="persona in Object.values(personas)"
             :key="persona.id"
-            class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-6"
+            class="rounded-xl shadow-2xl p-6"
+            :class="getPersonaBackground(persona.color)"
           >
             <div class="mb-6">
               <h2 class="text-2xl font-bold text-white mb-2">
@@ -1124,11 +1207,264 @@
       </div>
     </div>
 
+    <!-- Floating Research Button -->
+    <button
+      @click="showResearchSidebar = true"
+      class="fixed right-6 top-1/2 -translate-y-1/2 bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-4 py-6 rounded-l-2xl shadow-2xl font-bold text-sm flex flex-col items-center gap-2 z-40 transition-all duration-300 hover:px-5 group border-2 border-purple-400/30"
+    >
+      <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <span class="writing-mode-vertical">Research</span>
+      <span v-if="savedResearchList.length > 0" class="absolute -top-2 -left-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+        {{ savedResearchList.length }}
+      </span>
+    </button>
+
+    <!-- Research Sidebar -->
+    <transition name="slide-right">
+      <div
+        v-if="showResearchSidebar"
+        class="fixed inset-0 z-50 overflow-hidden"
+      >
+        <!-- Backdrop -->
+        <div
+          @click="showResearchSidebar = false"
+          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        ></div>
+        
+        <!-- Sidebar -->
+        <div class="absolute right-0 top-0 h-full w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl overflow-y-auto">
+          <!-- Header -->
+          <div class="sticky top-0 bg-slate-900/95 backdrop-blur border-b border-slate-700 p-6 flex items-center justify-between z-10">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <div>
+                <h2 class="text-2xl font-bold text-white">Research Manager</h2>
+                <p class="text-sm text-slate-400">Save and load your client research</p>
+              </div>
+            </div>
+            <button
+              @click="showResearchSidebar = false"
+              class="p-2 hover:bg-slate-800 rounded-lg transition text-slate-400 hover:text-white"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6 space-y-6">
+            <!-- Research Questions Section -->
+            <div class="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-2 border-blue-500/40 rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-6">
+                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <div>
+                  <h3 class="text-xl font-bold text-white">Client Research Questions</h3>
+                  <p class="text-xs text-slate-400">Fill out these questions to understand your prospect</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Question 1: Hooks -->
+                <div class="bg-slate-800/70 border-2 border-blue-500/30 rounded-lg p-4">
+                  <label class="block text-sm font-bold text-blue-300 mb-2">
+                    1. What do our clients love to talk about? (Hooks)
+                  </label>
+                  <textarea
+                    v-model="researchData.hooks"
+                    @input="saveResearchData"
+                    placeholder="E.g., Capital protection, time freedom, avoiding emotional trading..."
+                    rows="3"
+                    class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-600 text-white text-sm placeholder-slate-500 focus:border-blue-500 focus:outline-none transition resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Question 2: Where -->
+                <div class="bg-slate-800/70 border-2 border-purple-500/30 rounded-lg p-4">
+                  <label class="block text-sm font-bold text-purple-300 mb-2">
+                    2. Where are our clients hanging around? (Groups/Communities)
+                  </label>
+                  <textarea
+                    v-model="researchData.whereHangout"
+                    @input="saveResearchData"
+                    placeholder="E.g., LinkedIn founder groups, family office networks, private capital forums..."
+                    rows="3"
+                    class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-600 text-white text-sm placeholder-slate-500 focus:border-purple-500 focus:outline-none transition resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Question 3: Who -->
+                <div class="bg-slate-800/70 border-2 border-green-500/30 rounded-lg p-4">
+                  <label class="block text-sm font-bold text-green-300 mb-2">
+                    3. Who are they hanging around with?
+                  </label>
+                  <textarea
+                    v-model="researchData.whoHangout"
+                    @input="saveResearchData"
+                    placeholder="E.g., Other founders, CFOs, wealth managers, private investors..."
+                    rows="3"
+                    class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-600 text-white text-sm placeholder-slate-500 focus:border-green-500 focus:outline-none transition resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Question 4: Dream Life -->
+                <div class="bg-slate-800/70 border-2 border-orange-500/30 rounded-lg p-4">
+                  <label class="block text-sm font-bold text-orange-300 mb-2">
+                    4. What does their dream life look like?
+                  </label>
+                  <textarea
+                    v-model="researchData.dreamLife"
+                    @input="saveResearchData"
+                    placeholder="E.g., Financial freedom, control over capital, time with family, stress-free trading..."
+                    rows="3"
+                    class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-600 text-white text-sm placeholder-slate-500 focus:border-orange-500 focus:outline-none transition resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Question 5: Current Status -->
+                <div class="bg-slate-800/70 border-2 border-red-500/30 rounded-lg p-4">
+                  <label class="block text-sm font-bold text-red-300 mb-2">
+                    5. What is their current status? (Pain Points)
+                  </label>
+                  <textarea
+                    v-model="researchData.currentStatus"
+                    @input="saveResearchData"
+                    placeholder="E.g., Trading without structure, emotional decisions, losing capital slowly, no risk management..."
+                    rows="3"
+                    class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-600 text-white text-sm placeholder-slate-500 focus:border-red-500 focus:outline-none transition resize-none"
+                  ></textarea>
+                </div>
+
+                <p class="text-xs text-slate-400 text-center pt-2">✅ Auto-saves as you type</p>
+              </div>
+            </div>
+
+            <!-- Save Section -->
+            <div class="bg-slate-800/70 border-2 border-green-500/30 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                </svg>
+                Save Current Research
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-300 mb-2">Client Name</label>
+                  <input
+                    v-model="saveClientName"
+                    type="text"
+                    placeholder="E.g., John Doe - CEO TechCorp"
+                    class="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-600 text-white placeholder-slate-500 focus:border-green-500 focus:outline-none transition"
+                  />
+                </div>
+                <button
+                  @click="saveResearchEntry"
+                  :disabled="!saveClientName.trim()"
+                  class="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                  </svg>
+                  Save Research
+                </button>
+              </div>
+            </div>
+
+            <!-- Saved Research List -->
+            <div class="bg-slate-800/70 border-2 border-purple-500/30 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                </svg>
+                Saved Research
+                <span class="ml-auto text-sm bg-purple-600/30 text-purple-300 px-3 py-1 rounded-full">
+                  {{ savedResearchList.length }} saved
+                </span>
+              </h3>
+              
+              <div v-if="savedResearchList.length === 0" class="text-center text-slate-400 py-12 border-2 border-dashed border-slate-700 rounded-lg">
+                <svg class="w-16 h-16 mx-auto mb-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <p class="text-lg font-semibold">No saved research yet</p>
+                <p class="text-sm mt-2">Save your first research to see it here</p>
+              </div>
+              
+              <div v-else class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                <div
+                  v-for="entry in sortedSavedResearch"
+                  :key="entry.id"
+                  class="bg-slate-900/70 border-2 border-slate-600 hover:border-purple-500/50 rounded-lg p-4 transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10"
+                >
+                  <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1">
+                      <h4 class="text-white font-bold text-lg">{{ entry.clientName }}</h4>
+                      <p class="text-xs text-slate-400 mt-1">
+                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        {{ formatDate(entry.timestamp) }}
+                      </p>
+                    </div>
+                    <div class="flex gap-2">
+                      <button
+                        @click="loadResearchEntry(entry)"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-1"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        Load
+                      </button>
+                      <button
+                        @click="deleteResearchEntry(entry.id)"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition flex items-center gap-1"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- Preview -->
+                  <div class="text-xs text-slate-300 space-y-2 bg-slate-950/50 p-3 rounded border border-slate-700/50">
+                    <p v-if="entry.data.hooks" class="truncate">
+                      <span class="text-blue-400 font-semibold">🎣 Hooks:</span> {{ entry.data.hooks }}
+                    </p>
+                    <p v-if="entry.data.whereHangout" class="truncate">
+                      <span class="text-purple-400 font-semibold">📍 Where:</span> {{ entry.data.whereHangout }}
+                    </p>
+                    <p v-if="entry.data.whoHangout" class="truncate">
+                      <span class="text-green-400 font-semibold">👥 Who:</span> {{ entry.data.whoHangout }}
+                    </p>
+                    <p v-if="entry.data.dreamLife" class="truncate">
+                      <span class="text-orange-400 font-semibold">✨ Dream:</span> {{ entry.data.dreamLife }}
+                    </p>
+                    <p v-if="entry.data.currentStatus" class="truncate">
+                      <span class="text-red-400 font-semibold">⚠️ Pain:</span> {{ entry.data.currentStatus }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <!-- Toast Notification -->
     <transition name="fade">
       <div
         v-if="showToast"
-        class="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl font-semibold flex items-center gap-2"
+        class="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl font-semibold flex items-center gap-2 z-[60]"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -1140,8 +1476,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { personas, generalMessages, objections, meetingFlow } from './data/scripts.js'
+import { ref, computed, reactive } from 'vue'
+import { personas as personasImport, generalMessages, objections, meetingFlow } from './data/scripts.js'
+import { knowledgeBase, getAIContext } from './data/knowledge-base.js'
 
 export default {
   name: 'App',
@@ -1155,15 +1492,133 @@ export default {
     const showFullPitch = ref(false)
     const memes = ref([''])
     const linkedinProfileData = ref('')
-    const selectedModel = ref('qwen3-coder:30b')
+    const selectedModel = ref('llama3.1:8b')
     const apiEndpoint = ref('http://localhost:11434')
     const isProcessing = ref(false)
     const toastMessage = ref('Copied to clipboard!')
     const showSocials = ref(false)
     const coldEmailPrompt = ref('')
     const generatedColdEmail = ref('')
+    const showKnowledgeBase = ref(false)
+    
+    // Make personas reactive so Vue detects changes
+    const personas = reactive(JSON.parse(JSON.stringify(personasImport)))
+    
+    // Track which stages have been AI-customized
+    const aiCustomizedStages = ref({})
+    
+    // Research data with localStorage
+    const researchData = ref({
+      hooks: '',
+      whereHangout: '',
+      whoHangout: '',
+      dreamLife: '',
+      currentStatus: ''
+    })
+
+    // Load saved research data on mount
+    const loadResearchData = () => {
+      const saved = localStorage.getItem('crm-research-data')
+      if (saved) {
+        try {
+          researchData.value = JSON.parse(saved)
+        } catch (e) {
+          console.error('Failed to load research data:', e)
+        }
+      }
+    }
+
+    // Save research data to localStorage
+    const saveResearchData = () => {
+      localStorage.setItem('crm-research-data', JSON.stringify(researchData.value))
+    }
+
+    // Load data on startup
+    loadResearchData()
+
+    // Load saved research list
+    const loadSavedResearchList = () => {
+      const saved = localStorage.getItem('crm-saved-research-list')
+      if (saved) {
+        try {
+          savedResearchList.value = JSON.parse(saved)
+        } catch (e) {
+          console.error('Failed to load research list:', e)
+        }
+      }
+    }
+
+    // Save research entry
+    const saveResearchEntry = () => {
+      if (!saveClientName.value.trim()) return
+
+      const entry = {
+        id: Date.now(),
+        clientName: saveClientName.value.trim(),
+        timestamp: new Date().toISOString(),
+        data: { ...researchData.value }
+      }
+
+      savedResearchList.value.unshift(entry)
+      localStorage.setItem('crm-saved-research-list', JSON.stringify(savedResearchList.value))
+      
+      toastMessage.value = `Research saved for ${saveClientName.value}!`
+      showToast.value = true
+      setTimeout(() => {
+        showToast.value = false
+      }, 2000)
+
+      saveClientName.value = ''
+    }
+
+    // Load research entry
+    const loadResearchEntry = (entry) => {
+      researchData.value = { ...entry.data }
+      saveClientName.value = entry.clientName
+      // Don't close sidebar - keep it open so user can see the loaded data
+      
+      toastMessage.value = `Loaded research for ${entry.clientName}`
+      showToast.value = true
+      setTimeout(() => {
+        showToast.value = false
+      }, 2000)
+    }
+
+    // Delete research entry
+    const deleteResearchEntry = (id) => {
+      const entry = savedResearchList.value.find(e => e.id === id)
+      if (!confirm(`Delete research for "${entry.clientName}"?`)) return
+      
+      savedResearchList.value = savedResearchList.value.filter(e => e.id !== id)
+      localStorage.setItem('crm-saved-research-list', JSON.stringify(savedResearchList.value))
+      
+      toastMessage.value = 'Research entry deleted'
+      showToast.value = true
+      setTimeout(() => {
+        showToast.value = false
+      }, 2000)
+    }
+
+    // Format date
+    const formatDate = (isoString) => {
+      const date = new Date(isoString)
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+
     const stageSettingsOpen = ref({})
     const stageCustomInstructions = ref({})
+    const processingStage = ref(null)
+    const saveClientName = ref('')
+    const showResearchSidebar = ref(false)
+    const savedResearchList = ref([])
+
+    // Load saved research list on startup
+    loadSavedResearchList()
+
+    // Computed sorted list
+    const sortedSavedResearch = computed(() => {
+      return [...savedResearchList.value].sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+    })
 
     const socialLinks = [
       {
@@ -1320,11 +1775,14 @@ Mohamad Ali`
             stream: false,
             options: {
               temperature: 0.7,
-              num_predict: 300,
-              num_ctx: 8192,
-              num_thread: 16,
+              num_predict: 250,
+              num_ctx: 4096,
+              num_thread: 8,
               num_gpu: 1,
-              num_batch: 512
+              num_batch: 256,
+              repeat_penalty: 1.1,
+              top_k: 40,
+              top_p: 0.9
             }
           }),
           signal: controller.signal
@@ -1370,44 +1828,65 @@ Mohamad Ali`
       }
 
       isProcessing.value = true
+      processingStage.value = stageNumber
       const persona = personas[personaId]
       const stage = persona.stages.find(s => s.stage === stageNumber)
       const customInstructions = stageCustomInstructions.value[stageNumber] || ''
 
       // Truncate profile data if too long
-      const profileData = linkedinProfileData.value.length > 2000 
-        ? linkedinProfileData.value.substring(0, 2000) + '...' 
+      const profileData = linkedinProfileData.value.length > 1500 
+        ? linkedinProfileData.value.substring(0, 1500) + '...' 
         : linkedinProfileData.value
 
-      const prompt = `Personalize this LinkedIn message for a ${persona.name.toLowerCase()}.
+      const aiContext = getAIContext()
+      
+      const prompt = `${aiContext}
 
-Profile: ${profileData}
+Personalize this LinkedIn message for a ${persona.name.toLowerCase()}.
 
-Original: "${stage.message}"
+PROSPECT PROFILE: ${profileData}
 
-Goal: ${stage.goal}
-${customInstructions ? `Extra: ${customInstructions}` : ''}
+ORIGINAL MESSAGE: "${stage.message}"
 
-Rewrite to reference their profile. Keep concise. Use NAME as placeholder. Return ONLY the message.`
+GOAL: ${stage.goal}
+${customInstructions ? `EXTRA INSTRUCTIONS: ${customInstructions}` : ''}
+
+Rewrite using details from BOTH the prospect's profile AND your background/STOA. Keep concise. Use NAME as placeholder. Return ONLY the message.`
 
       try {
+        console.log('Starting customization for stage', stageNumber)
         const customizedMessage = await callLocalLLM(prompt)
-        stage.message = customizedMessage.trim()
         
-        toastMessage.value = `Stage ${stageNumber} customized!`
+        // Force Vue to detect change by replacing the entire message
+        const updatedMessage = customizedMessage.trim()
+        console.log('AI Generated Message:', updatedMessage)
+        
+        // Update reactively
+        stage.message = updatedMessage
+        
+        // Mark this stage as AI-customized
+        aiCustomizedStages.value[`${personaId}-${stageNumber}`] = true
+        
+        // Force re-render
+        personas[personaId].stages = [...personas[personaId].stages]
+        
+        console.log('Message updated in UI')
+        
+        toastMessage.value = `Stage ${stageNumber} customized! ✅`
         showToast.value = true
         setTimeout(() => {
           showToast.value = false
         }, 2000)
       } catch (err) {
         console.error('Failed to customize:', err)
-        toastMessage.value = 'AI customization failed'
+        toastMessage.value = `Failed: ${err.message}`
         showToast.value = true
         setTimeout(() => {
           showToast.value = false
-        }, 2000)
+        }, 3000)
       } finally {
         isProcessing.value = false
+        processingStage.value = null
       }
     }
 
@@ -1433,29 +1912,42 @@ Rewrite to reference their profile. Keep concise. Use NAME as placeholder. Retur
             ? linkedinProfileData.value.substring(0, 2000) + '...' 
             : linkedinProfileData.value
 
-          const prompt = `Personalize this LinkedIn message for a ${persona.name.toLowerCase()}.
+          const aiContext = getAIContext()
+          
+          const prompt = `${aiContext}
 
-Profile: ${profileData}
+Personalize this LinkedIn message for a ${persona.name.toLowerCase()}.
 
-Original: "${stage.message}"
+PROSPECT PROFILE: ${profileData}
 
-Goal: ${stage.goal}
-${customInstructions ? `Extra: ${customInstructions}` : ''}
+ORIGINAL MESSAGE: "${stage.message}"
 
-Rewrite to reference their profile. Keep concise. Use NAME as placeholder. Return ONLY the message.`
+GOAL: ${stage.goal}
+${customInstructions ? `EXTRA INSTRUCTIONS: ${customInstructions}` : ''}
+
+Rewrite using details from BOTH the prospect's profile AND your background/STOA. Keep concise. Use NAME as placeholder. Return ONLY the message.`
 
           const customizedMessage = await callLocalLLM(prompt)
           stage.message = customizedMessage.trim()
+          
+          // Mark this stage as AI-customized
+          aiCustomizedStages.value[`${personaId}-${stage.stage}`] = true
+          
+          console.log(`Stage ${stage.stage} updated:`, customizedMessage.substring(0, 50) + '...')
         }
 
-        toastMessage.value = `All stages customized for ${persona.name}!`
+        // Force re-render
+        personas[personaId].stages = [...personas[personaId].stages]
+        console.log('All stages updated in UI')
+
+        toastMessage.value = `All stages customized for ${persona.name}! ✅`
         showToast.value = true
         setTimeout(() => {
           showToast.value = false
         }, 2000)
       } catch (err) {
         console.error('Failed to customize all stages:', err)
-        toastMessage.value = 'AI customization failed'
+        toastMessage.value = `Failed: ${err.message}`
         showToast.value = true
         setTimeout(() => {
           showToast.value = false
@@ -1490,6 +1982,15 @@ Rewrite to reference their profile. Keep concise. Use NAME as placeholder. Retur
         orange: 'bg-orange-600 text-white'
       }
       return classes[color] || 'bg-gray-600 text-white'
+    }
+
+    const getPersonaBackground = (color) => {
+      const classes = {
+        blue: 'bg-gradient-to-br from-blue-900/40 to-slate-800 border-2 border-blue-600/30',
+        green: 'bg-gradient-to-br from-green-900/40 to-slate-800 border-2 border-green-600/30',
+        orange: 'bg-gradient-to-br from-orange-900/40 to-slate-800 border-2 border-orange-600/30'
+      }
+      return classes[color] || 'bg-slate-800 border border-slate-700'
     }
 
     const addMeme = () => {
@@ -1531,15 +2032,19 @@ Rewrite to reference their profile. Keep concise. Use NAME as placeholder. Retur
         ? linkedinProfileData.value.substring(0, 2000) + '...' 
         : linkedinProfileData.value
 
-      const prompt = `Write a cold email for ${fullName}.
+      const aiContext = getAIContext()
+      
+      const prompt = `${aiContext}
 
-Profile: ${profileData}
-${coldEmailPrompt.value ? `Extra: ${coldEmailPrompt.value}` : ''}
+Write a cold email for ${fullName}.
+
+PROSPECT PROFILE: ${profileData}
+${coldEmailPrompt.value ? `EXTRA INSTRUCTIONS: ${coldEmailPrompt.value}` : ''}
 
 Include:
 - Subject line (reference their profile)
-- 2 specific details from profile
-- Pitch STOA (12-week trading system, <90min/day)
+- 2-3 specific details from their profile
+- Connect to STOA value (use context above)
 - Keep under 120 words
 - Sign: Mohamad Ali, https://sentientinstitutes.com/
 
@@ -1584,6 +2089,17 @@ Format: Subject line, then email body.`
       socialLinks,
       coldEmailPrompt,
       generatedColdEmail,
+      researchData,
+      saveResearchData,
+      saveClientName,
+      showResearchSidebar,
+      savedResearchList,
+      sortedSavedResearch,
+      saveResearchEntry,
+      loadResearchEntry,
+      deleteResearchEntry,
+      formatDate,
+      processingStage,
       stageSettingsOpen,
       stageCustomInstructions,
       presets,
@@ -1592,6 +2108,9 @@ Format: Subject line, then email body.`
       generalMessages,
       objections,
       meetingFlow,
+      knowledgeBase,
+      showKnowledgeBase,
+      aiCustomizedStages,
       fullPitchText,
       replaceNames,
       copyToClipboard,
@@ -1604,6 +2123,7 @@ Format: Subject line, then email body.`
       getBgClass,
       getBorderClass,
       getActiveClass,
+      getPersonaBackground,
       addMeme,
       removeMeme
     }
@@ -1627,5 +2147,30 @@ Format: Subject line, then email body.`
 .expand-enter-from, .expand-leave-to {
   max-height: 0;
   opacity: 0;
+}
+
+/* Slide-right animation for sidebar */
+.slide-right-enter-active, .slide-right-leave-active {
+  transition: all 0.3s ease-out;
+}
+.slide-right-enter-from {
+  opacity: 0;
+}
+.slide-right-leave-to {
+  opacity: 0;
+}
+.slide-right-enter-from > div:last-child,
+.slide-right-leave-to > div:last-child {
+  transform: translateX(100%);
+}
+.slide-right-enter-active > div:last-child,
+.slide-right-leave-active > div:last-child {
+  transition: transform 0.3s ease-out;
+}
+
+/* Vertical text for floating button */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 </style>
