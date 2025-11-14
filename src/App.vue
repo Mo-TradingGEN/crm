@@ -2554,17 +2554,17 @@ BAD EXAMPLE: Generic message, too long, or salesy`
       }
 
       if (stageNumber === 2) {
-        return `\n\nSTAGE 2 WARM-UP RULES (Hormozi micro-thread):
-1. Produce exactly THREE short sentences (periods only, no lists). Each sentence ≤ 12 words. Tone = casual, like two peers who already know each other.
-2. Sentence 1 = Highlight ONE specific profile data point (company, model, role, recent post, fundraise, sector). Drop it like an inside reference ("Saw you…", "Caught the post about…").
-3. Sentence 2 = Micro peer signal in relaxed language (use contractions, no corporate speak). Hint that we deal with the same chaos, no selling or bragging.
-4. Sentence 3 = ONE curiosity question about their world, phrased like a friend (“Still seeing…?”, “You leaning more into…?”). One question mark max. No “hope you’re well”, “quick question”, or stiff phrasing.
-5. Entire message ≤ 30 words. No emojis, hashtags, ellipses, exclamation marks, or formal phrases. Keep it breezy but sharp.
-6. Pull ALL substance from the LinkedIn profile data and our memory context. Never reuse template text or generic compliments.
+        return `\n\nSTAGE 2 WARM-UP RULES (Anchor • Insight • Effortless Question):
+1. Exactly THREE short sentences (line-separated). Sentence 1 = profile anchor. Sentence 2 = micro-observation. Sentence 3 = effortless question. Total message ≤ 35 words (readable in <25 seconds).
+2. Anchor: pull ONE identity-level detail from their profile (company they built, project they scaled, transition after an exit, worldview, discipline habit). Name it plainly, no flattery.
+3. Micro-observation: show you understand how operators like them think (structure vs noise, autonomy vs delegation, growth vs preservation). Keep tone calm, peer-to-peer, casual language.
+4. Question: ONE low-friction question that’s easy to answer (“Are you leaning growth or preservation right now?”, “Still running that playbook hands-on or delegating it?”). One question mark max. No multi-part questions.
+5. Absolutely no pitch, no value dump, no “I help…”. No emojis, hashtags, ellipses, exclamation marks, or CTA. Pure opener that proves you saw them.
+6. Source EVERYTHING from the LinkedIn profile data and memory context. If detail isn’t explicit, infer logically from their role/industry but keep it believable.
 Example:
-"Yann, saw you building Unity Group’s agglomeration model with SME owners.
-Feels like you’re babysitting structure more than spreadsheets lately.
-Founders hitting you with excitement or nerves on that model?"`
+"Noticed the agglomeration model you’re driving at Unity Group.
+People who’ve built that kind of machine usually crave structure over noise with their own capital.
+Quick one—are you favoring growth or preservation lately?"`
       }
 
       return '\n\nKeep concise and professional.'

@@ -18,7 +18,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
+        message: 'NAME, saw you steering [specific build / M&A move] at [company].\nWhat shift are operators pushing hardest on their capital stack right now?',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']
@@ -80,7 +80,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
+        message: 'NAME, noticed you driving [deal / initiative] inside [company].\nFrom your seat, which deals are crowding the pipeline most this year?',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']
@@ -142,7 +142,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
+        message: 'NAME, saw your family office repositioning around [allocation / sector play].\nIs the bigger decision now holding more dry powder or leaning into that allocation?',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']
