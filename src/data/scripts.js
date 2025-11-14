@@ -18,7 +18,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'How are you balancing life after the exit? A lot of operators tell me the shift from building a company to managing personal capital is a different type of pressure.',
+        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']
@@ -80,7 +80,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'Curious, how are you navigating the markets these days with such a demanding schedule? Most finance pros tell me time is their biggest bottleneck.',
+        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']
@@ -142,7 +142,7 @@ export const personas = {
         stage: 2,
         title: 'Warm-Up',
         subtitle: 'Light conversation',
-        message: 'How are you currently handling market decisions? Most inheritors tell me the hardest part is avoiding unnecessary risk while staying in control.',
+        message: 'AI will craft this warm-up from the LinkedIn profile once you click customize.',
         goal: 'Start a light exchange, show you are a peer, not a closer',
         dos: ['One personal line', 'One curiosity question', 'Keep it human and light'],
         donts: ['No selling', 'No heavy topics', 'No long paragraphs']

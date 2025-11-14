@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen pt-20 p-4 md:p-8 transition-all duration-300" :style="showResearchSidebar ? 'margin-right: 32rem' : ''">
+  <div class="min-h-screen pt-28 md:pt-32 p-4 md:p-8 transition-all duration-300" :style="showResearchSidebar ? 'margin-right: 32rem' : ''">
     <div class="max-w-7xl mx-auto">
       <!-- Hero Title -->
       <div class="text-center mb-8">
@@ -1045,6 +1045,13 @@ Might have some insights worth sharing with you.`}}</div>
             Persona Scripts
           </button>
           <button
+            @click="activeTab = 'followups'"
+            :class="activeTab === 'followups' ? 'bg-white text-slate-900' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'"
+            class="px-6 py-2 rounded-lg font-semibold transition"
+          >
+            Follow-Ups
+          </button>
+          <button
             @click="activeTab = 'coldemail'"
             :class="activeTab === 'coldemail' ? 'bg-white text-slate-900' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'"
             class="px-6 py-2 rounded-lg font-semibold transition"
@@ -1065,6 +1072,81 @@ Might have some insights worth sharing with you.`}}</div>
           >
             Objection Handling
           </button>
+        </div>
+      </div>
+
+      <!-- Follow-Ups Section -->
+      <div v-if="activeTab === 'followups'" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-10 mb-6">
+        <div class="flex items-center gap-3 mb-6">
+          <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <div>
+            <h2 class="text-3xl font-bold text-white">Follow-Up Arsenal</h2>
+            <p class="text-slate-400 text-sm">Short, peer-to-peer nudges that keep you in control without sounding salesy.</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+          <div class="flex-1 p-4 bg-slate-900/60 border border-slate-700 rounded-xl text-sm text-slate-300 leading-relaxed">
+            Use these when you need to bump a thread without losing status. Every line keeps the tone friendly, calm, and human. Replace <span class="text-purple-300 font-semibold">NAME</span> automatically with your inputs below.
+          </div>
+          <div class="w-full md:w-80 bg-slate-900/70 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-slate-200 font-semibold text-sm uppercase tracking-wide">Follow-Up Name Override</h4>
+            <input
+              v-model="followupFirstName"
+              type="text"
+              placeholder="First Name"
+              class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white placeholder-slate-500 focus:border-purple-500 focus:outline-none transition"
+            />
+            <input
+              v-model="followupLastName"
+              type="text"
+              placeholder="Last Name"
+              class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white placeholder-slate-500 focus:border-purple-500 focus:outline-none transition"
+            />
+            <p class="text-xs text-slate-400">These fields apply only to the Follow-Up messages below.</p>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div
+            v-for="category in followUps"
+            :key="category.id"
+            class="rounded-2xl p-5 flex flex-col gap-4 border"
+            :style="{ borderColor: category.border, background: category.background }"
+          >
+            <div>
+              <p class="text-xs uppercase tracking-wide font-semibold mb-1" :style="{ color: category.accent }">{{ category.timing }}</p>
+              <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                <span
+                  class="w-2.5 h-2.5 rounded-full"
+                  :style="{ backgroundColor: category.accent }"
+                ></span>
+                {{ category.title }}
+              </h3>
+              <p class="text-sm text-slate-200/80 leading-relaxed">{{ category.description }}</p>
+            </div>
+
+            <div class="space-y-3">
+              <div
+                v-for="(option, idx) in category.options"
+                :key="idx"
+                class="bg-slate-900/60 border border-white/5 rounded-xl p-4"
+              >
+                <p class="text-slate-100 text-base leading-relaxed mb-3">{{ replaceNames(option, followupFirstName, followupLastName) }}</p>
+                <button
+                  @click="copyToClipboard(replaceNames(option, followupFirstName, followupLastName))"
+                  class="px-4 py-2 bg-white text-slate-900 rounded-lg text-sm font-semibold hover:bg-slate-100 transition flex items-center gap-2"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2152,6 +2234,8 @@ export default {
   setup() {
     const firstName = ref('')
     const lastName = ref('')
+    const followupFirstName = ref('')
+    const followupLastName = ref('')
     const selectedPersona = ref('builder')
     const viewMode = ref('tabs')
     const activeTab = ref('personas')
@@ -2365,6 +2449,127 @@ Want to know ME better and why you should trust me? Go here https://sentientinst
       brief: 'Keep it very brief and to the point. Maximum 50 words. Direct and impactful.'
     }
 
+    const profileDataGuidance = `IMPORTANT: The LinkedIn profile data we provide is a raw copy/paste dump of the entire profile page (headline, activity highlights, services, featured posts, experience, education, licenses, projects, skills, recommendations, interests, etc.). The FIRST line or explicit name field refers to the actual prospect. Any additional names appearing later belong to other people mentioned in their posts, comments, interests, or recommendations—do NOT confuse them with the prospect. Treat the data as unstructured text, extract only what is relevant, and ignore unrelated names or sections.`
+
+    const followUps = [
+      {
+        id: 'soft-bump',
+        title: 'Soft Bump',
+        timing: 'After 1 day • No reply',
+        description: 'Short, friendly nudge that keeps status while staying easy to answer.',
+        accent: '#7dd3fc',
+        border: 'rgba(125, 211, 252, 0.4)',
+        background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.2), rgba(15, 23, 42, 0.9))',
+        options: [
+          'Hey NAME, just giving this a quick nudge in case it slipped down your inbox.',
+          'Hey NAME, not sure if LinkedIn buried my last note. Happens to me all the time.',
+          'Dropping this back at the top of your inbox, NAME.'
+        ]
+      },
+      {
+        id: 'friendly-checkin',
+        title: 'Friendly Check-In',
+        timing: 'After 2-3 days • Still no reply',
+        description: 'Keeps your authority intact and signals you move efficiently.',
+        accent: '#fcd34d',
+        border: 'rgba(252, 211, 77, 0.4)',
+        background: 'linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(15, 23, 42, 0.9))',
+        options: [
+          'NAME, hope your week’s running smooth. Just circling back on my last message.',
+          'Quick follow-up here, NAME. Didn’t want this to get lost with everything you’re juggling.',
+          'Hey NAME, checking in real quick on this. Let me know when you get a minute.'
+        ]
+      },
+      {
+        id: 'human-relate',
+        title: 'Human Relatability',
+        timing: 'Use anytime • Stay warm & human',
+        description: 'Friendly touch without sounding automated. Guides the conversation without pressure.',
+        accent: '#f9a8d4',
+        border: 'rgba(249, 168, 212, 0.4)',
+        background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(15, 23, 42, 0.9))',
+        options: [
+          'LinkedIn gets messy fast. Figured I’d bring this one back up, NAME.',
+          'My inbox gets flooded too, so no stress if you missed my last message. Just keeping the thread warm.',
+          'Hey NAME, no rush at all — just wanted to make sure I hadn’t left this hanging on my side.'
+        ]
+      },
+      {
+        id: 'authority-respect',
+        title: 'Authority + Respect Time',
+        timing: 'Use when you want to project peer status',
+        description: 'Signals you keep tight conversations and respect calendars.',
+        accent: '#c084fc',
+        border: 'rgba(192, 132, 252, 0.4)',
+        background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(15, 23, 42, 0.9))',
+        options: [
+          'NAME, looping back on this since I try to keep my conversations clean. Let me know your thoughts when you get a chance.',
+          'Following up here, NAME. I keep a pretty tight inbox and didn’t want this to fall through the cracks.',
+          'Hey NAME, touching base again. If now’s not the right time, no problem — just let me know.'
+        ]
+      },
+      {
+        id: 'easy-exit',
+        title: 'Easy Exit',
+        timing: 'Use to reduce pressure & increase reply odds',
+        description: 'Removes friction and makes it easy to give you direction.',
+        accent: '#34d399',
+        border: 'rgba(52, 211, 153, 0.4)',
+        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.9))',
+        options: [
+          'If it’s not something you want to get into right now, totally fine. Just tell me and I’ll close the loop.',
+          'NAME, happy to pause this if it’s not a priority. Just let me know.',
+          'No pressure at all on this. Just looking for direction one way or the other.'
+        ]
+      },
+      {
+        id: 'light-humor',
+        title: 'Light Humor / Human Touch',
+        timing: 'Use sparingly • When rapport allows',
+        description: 'A little humor to keep things human (still controlled and professional).',
+        accent: '#f472b6',
+        border: 'rgba(244, 114, 182, 0.4)',
+        background: 'linear-gradient(135deg, rgba(219, 39, 119, 0.18), rgba(15, 23, 42, 0.9))',
+        options: [
+          'I think LinkedIn is hiding this from you on purpose.',
+          'Maybe the inbox gods ate my last message — happens to me constantly.',
+          'Giving this one more attempt before I assume your inbox won.'
+        ]
+      }
+    ]
+
+    const getStageSpecificInstructions = (stageNumber) => {
+      if (stageNumber === 1) {
+        return `\n\nCRITICAL RULES FOR STAGE 1:
+1. MAX 300 characters (LinkedIn connection request limit)
+2. Find ONE specific detail from their profile (company they built, role, achievement, exit)
+3. Reference that detail naturally
+4. Make it peer-to-peer (not salesy)
+5. Show respect for what they built/earned
+6. Use NAME placeholder for their first name
+7. No pitch, no link, no asking for anything
+
+GOOD EXAMPLE: "Hey NAME, saw you exited [company]. Anyone who's built and sold a company usually thinks deeply about capital decisions. Happy to connect."
+BAD EXAMPLE: Generic message, too long, or salesy`
+      }
+
+      if (stageNumber === 2) {
+        return `\n\nSTAGE 2 WARM-UP RULES (Hormozi micro-thread):
+1. Produce exactly THREE short sentences (periods only, no lists). Each sentence ≤ 12 words. Tone = casual, like two peers who already know each other.
+2. Sentence 1 = Highlight ONE specific profile data point (company, model, role, recent post, fundraise, sector). Drop it like an inside reference ("Saw you…", "Caught the post about…").
+3. Sentence 2 = Micro peer signal in relaxed language (use contractions, no corporate speak). Hint that we deal with the same chaos, no selling or bragging.
+4. Sentence 3 = ONE curiosity question about their world, phrased like a friend (“Still seeing…?”, “You leaning more into…?”). One question mark max. No “hope you’re well”, “quick question”, or stiff phrasing.
+5. Entire message ≤ 30 words. No emojis, hashtags, ellipses, exclamation marks, or formal phrases. Keep it breezy but sharp.
+6. Pull ALL substance from the LinkedIn profile data and our memory context. Never reuse template text or generic compliments.
+Example:
+"Yann, saw you building Unity Group’s agglomeration model with SME owners.
+Feels like you’re babysitting structure more than spreadsheets lately.
+Founders hitting you with excitement or nerves on that model?"`
+      }
+
+      return '\n\nKeep concise and professional.'
+    }
+
     const fullPitchText = `Hey NAME,
 
 I enjoyed our conversation today. Good energy and good thinking. I'm looking forward to continuing it.
@@ -2413,18 +2618,12 @@ Mohamad Ali`
       return null
     }
     
-    const replaceNames = (message) => {
+    const replaceNames = (message, overrideFirst, overrideLast) => {
       let result = message
       
-      // Use manual input if available, otherwise try to extract from profile
-      let name = firstName.value
-      if (!name) {
-        name = extractNameFromProfile() || 'NAME'
-      }
-      
-      const fullName = lastName.value 
-        ? `${name} ${lastName.value}`.trim() 
-        : name
+      const fallbackFirst = overrideFirst || firstName.value || extractNameFromProfile() || 'NAME'
+      const fallbackLast = overrideLast || lastName.value || ''
+      const fullName = fallbackLast ? `${fallbackFirst} ${fallbackLast}`.trim() : fallbackFirst
       
       result = result.replace(/NAME/g, fullName)
       return result
@@ -2447,7 +2646,26 @@ Mohamad Ali`
     const copyTemplate = async (templateId) => {
       const element = document.getElementById(templateId)
       if (element) {
-        const text = element.innerText
+        let text = element.innerText
+        
+        // Remove all quotes from the text before copying
+        const quoteChars = ['"', "'", '\u201C', '\u201D', '\u2018', '\u2019', '`', '\u00B4']
+        
+        // Trim and then remove quotes from beginning and end repeatedly
+        text = text.trim()
+        while (text.length >= 2) {
+          const firstChar = text[0]
+          const lastChar = text[text.length - 1]
+          
+          if (quoteChars.includes(firstChar) || quoteChars.includes(lastChar)) {
+            if (quoteChars.includes(firstChar)) text = text.slice(1)
+            if (text.length > 0 && quoteChars.includes(lastChar)) text = text.slice(0, -1)
+            text = text.trim()
+          } else {
+            break
+          }
+        }
+        
         await copyToClipboard(text)
       }
     }
@@ -2497,7 +2715,11 @@ Mohamad Ali`
         const element = document.getElementById(templateId)
         const templateText = element ? element.innerText : ''
 
-        const prompt = `You are an expert sales consultant helping customize a LinkedIn cold outreach message.
+        const aiMemory = getAIContext()
+
+        const prompt = `${aiMemory}
+
+You are an expert sales consultant helping customize a LinkedIn cold outreach message.
 
 **Our Business Info:**
 - Mission: Making everyone aware of the danger of the stock market and giving people the infrastructure to protect their wealth.
@@ -2506,6 +2728,9 @@ Mohamad Ali`
 
 **LinkedIn Profile Data:**
 ${linkedinProfileData.value}
+
+**Profile Data Format Notes:**
+${profileDataGuidance}
 
 **Template to Customize:**
 ${templateText}
@@ -2558,21 +2783,29 @@ Return ONLY the filled-in template text with no markdown, no explanations, just 
         aiMetrics.value.status = 'success'
         aiMetrics.value.lastRequest = new Date().toLocaleTimeString()
 
-        // Clean up response: trim and remove all surrounding quotes (including smart quotes)
+        // Clean up response: aggressively remove ALL quotes
         let cleanedResponse = data.response.trim()
-        // Remove quotes repeatedly until none remain
+        
+        // Remove all types of quotes from the beginning and end repeatedly
         while (cleanedResponse.length >= 2) {
           const firstChar = cleanedResponse[0]
           const lastChar = cleanedResponse[cleanedResponse.length - 1]
-          // Check for regular quotes, smart quotes (U+201C, U+201D, U+2018, U+2019)
-          const quoteChars = ['"', "'", '\u201C', '\u201D', '\u2018', '\u2019']
           
-          if (quoteChars.includes(firstChar) && quoteChars.includes(lastChar)) {
-            cleanedResponse = cleanedResponse.slice(1, -1).trim()
+          // Check for any type of quote character (using Unicode escape sequences)
+          const quoteChars = ['"', "'", '\u201C', '\u201D', '\u2018', '\u2019', '`', '\u00B4', '\u2019', '\u2018', '\u201C', '\u201D']
+          
+          const isStartQuote = quoteChars.includes(firstChar)
+          const isEndQuote = quoteChars.includes(lastChar)
+          
+          if (isStartQuote || isEndQuote) {
+            if (isStartQuote) cleanedResponse = cleanedResponse.slice(1)
+            if (isEndQuote && cleanedResponse.length > 0) cleanedResponse = cleanedResponse.slice(0, -1)
+            cleanedResponse = cleanedResponse.trim()
           } else {
             break
           }
         }
+        
         customizedTemplates.value[templateId] = cleanedResponse
         toastMessage.value = `✅ Template customized in ${responseTime}s!`
       } catch (error) {
@@ -2853,20 +3086,12 @@ Return ONLY the filled-in template text with no markdown, no explanations, just 
       const aiContext = getAIContext()
       
       // Stage 1 needs special personalization instructions
-      const stage1Instructions = stageNumber === 1 
-        ? `\n\nCRITICAL RULES FOR STAGE 1:
-1. MAX 300 characters (LinkedIn connection request limit)
-2. Find ONE specific detail from their profile (company they built, role, achievement, exit)
-3. Reference that detail naturally
-4. Make it peer-to-peer (not salesy)
-5. Show respect for what they built/earned
-6. Use NAME placeholder for their first name
-7. No pitch, no link, no asking for anything
-
-GOOD EXAMPLE: "Hey NAME, saw you exited [company]. Anyone who's built and sold a company usually thinks deeply about capital decisions. Happy to connect."
-BAD EXAMPLE: Generic message, too long, or salesy` 
-        : '\n\nKeep concise and professional.'
+      const stageInstructions = getStageSpecificInstructions(stageNumber)
       
+      const templateSection = stageNumber === 2
+        ? 'BUILD THIS WARM-UP FROM SCRATCH USING ONLY THE PROFILE DATA AND OUR MEMORY. IGNORE ANY PREVIOUS TEMPLATE TEXT.'
+        : `ORIGINAL TEMPLATE: "${stage.message}"`
+
       const prompt = `${aiContext}
 
 Personalize this connection request for a ${persona.name.toLowerCase()}.
@@ -2874,11 +3099,14 @@ Personalize this connection request for a ${persona.name.toLowerCase()}.
 PROSPECT PROFILE (read carefully for specific details):
 ${profileData}
 
-ORIGINAL TEMPLATE: "${stage.message}"
+PROFILE DATA FORMAT NOTES:
+${profileDataGuidance}
+
+${templateSection}
 
 GOAL: ${stage.goal}
 ${customInstructions ? `EXTRA INSTRUCTIONS: ${customInstructions}` : ''}
-${stage1Instructions}
+${stageInstructions}
 
 Rewrite using a SPECIFIC detail from their profile. Use NAME as placeholder. Return ONLY the message.`
 
@@ -2960,20 +3188,12 @@ Rewrite using a SPECIFIC detail from their profile. Use NAME as placeholder. Ret
           const aiContext = getAIContext()
           
           // Stage 1 needs special personalization instructions
-          const stage1Instructions = stage.stage === 1 
-            ? `\n\nCRITICAL RULES FOR STAGE 1:
-1. MAX 300 characters (LinkedIn connection request limit)
-2. Find ONE specific detail from their profile (company they built, role, achievement, exit)
-3. Reference that detail naturally
-4. Make it peer-to-peer (not salesy)
-5. Show respect for what they built/earned
-6. Use NAME placeholder for their first name
-7. No pitch, no link, no asking for anything
-
-GOOD EXAMPLE: "Hey NAME, saw you exited [company]. Anyone who's built and sold a company usually thinks deeply about capital decisions. Happy to connect."
-BAD EXAMPLE: Generic message, too long, or salesy` 
-            : '\n\nKeep concise and professional.'
+          const stageInstructions = getStageSpecificInstructions(stage.stage)
           
+          const templateSection = stage.stage === 2
+            ? 'BUILD THIS WARM-UP FROM SCRATCH USING ONLY THE PROFILE DATA AND OUR MEMORY. IGNORE ANY PREVIOUS TEMPLATE TEXT.'
+            : `ORIGINAL TEMPLATE: "${stage.message}"`
+
           const prompt = `${aiContext}
 
 Personalize this connection request for a ${persona.name.toLowerCase()}.
@@ -2981,11 +3201,14 @@ Personalize this connection request for a ${persona.name.toLowerCase()}.
 PROSPECT PROFILE (read carefully for specific details):
 ${profileData}
 
-ORIGINAL TEMPLATE: "${stage.message}"
+PROFILE DATA FORMAT NOTES:
+${profileDataGuidance}
+
+${templateSection}
 
 GOAL: ${stage.goal}
 ${customInstructions ? `EXTRA INSTRUCTIONS: ${customInstructions}` : ''}
-${stage1Instructions}
+${stageInstructions}
 
 Rewrite using a SPECIFIC detail from their profile. Use NAME as placeholder. Return ONLY the message.`
 
@@ -3108,6 +3331,7 @@ Rewrite using a SPECIFIC detail from their profile. Use NAME as placeholder. Ret
 Write a cold email for ${fullName}.
 
 PROSPECT PROFILE: ${profileData}
+PROFILE DATA FORMAT NOTES: ${profileDataGuidance}
 ${coldEmailPrompt.value ? `EXTRA INSTRUCTIONS: ${coldEmailPrompt.value}` : ''}
 
 Include:
@@ -3143,6 +3367,8 @@ Format: Subject line, then email body.`
     return {
       firstName,
       lastName,
+      followupFirstName,
+      followupLastName,
       selectedPersona,
       viewMode,
       activeTab,
@@ -3205,6 +3431,7 @@ Format: Subject line, then email body.`
       customizeAllStages,
       copyAllSocialLinks,
       generateColdEmail,
+      followUps,
       getBgClass,
       getBorderClass,
       getActiveClass,
