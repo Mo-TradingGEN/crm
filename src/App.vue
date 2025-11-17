@@ -2422,7 +2422,8 @@ export default {
     const memes = ref([''])
     const linkedinProfileData = ref('')
     const selectedModel = ref('llama3.2:3b')  // Fast 3B model for RTX 2080
-    const apiEndpoint = ref('http://localhost:11434')
+    // Use environment variable if available (for Vercel), otherwise default to localhost
+    const apiEndpoint = ref(import.meta.env.VITE_OLLAMA_ENDPOINT || 'http://localhost:11434')
     const isProcessing = ref(false)
     const toastMessage = ref('Copied to clipboard!')
     const showSocials = ref(false)
