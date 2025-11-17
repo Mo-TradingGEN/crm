@@ -64,6 +64,130 @@
         </div>
       </div>
 
+      <!-- Core Principles Section -->
+      <div id="section-principles" class="bg-gradient-to-r from-emerald-900/50 to-teal-900/50 border-2 border-emerald-500/30 rounded-xl shadow-2xl p-6 md:p-8 mb-6 backdrop-blur">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Core Principles</h2>
+          <div class="w-24 h-1 bg-emerald-400 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Opening Statement -->
+          <div class="bg-slate-800/70 border-2 border-emerald-500/40 rounded-xl p-6">
+            <p class="text-lg text-slate-200 leading-relaxed text-center">
+              Everyone operates with priorities. Most people have three that drive every decision: <span class="text-emerald-400 font-bold">confidence</span>, <span class="text-emerald-400 font-bold">control</span>, and <span class="text-emerald-400 font-bold">time</span>.
+            </p>
+            <p class="text-lg text-slate-200 leading-relaxed text-center mt-4">
+              Your job in a conversation is to uncover which of these matters most to them right now.
+            </p>
+          </div>
+
+          <!-- What We Sell -->
+          <div class="bg-slate-800/70 border-2 border-teal-500/40 rounded-xl p-6">
+            <h3 class="text-xl font-bold text-white mb-4 text-center">What We Sell</h3>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg">
+                <div class="text-3xl mb-2">🎯</div>
+                <p class="text-teal-300 font-semibold">Clarity</p>
+              </div>
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg">
+                <div class="text-3xl mb-2">⚡</div>
+                <p class="text-teal-300 font-semibold">Control</p>
+              </div>
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg">
+                <div class="text-3xl mb-2">⏱️</div>
+                <p class="text-teal-300 font-semibold">Time Back</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-400 text-center mt-4 italic">Those are the pillars, not tactics or tricks.</p>
+          </div>
+
+          <!-- The Three As -->
+          <div class="bg-slate-800/70 border-2 border-blue-500/40 rounded-xl p-6">
+            <h3 class="text-xl font-bold text-white mb-4 text-center">The Three As</h3>
+            <p class="text-lg text-slate-200 leading-relaxed text-center mb-4">
+              Use the three As in every interaction:
+            </p>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg border-l-4 border-blue-500">
+                <div class="text-2xl font-bold text-blue-400 mb-2">1</div>
+                <p class="text-blue-300 font-semibold text-lg">Acknowledge</p>
+              </div>
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg border-l-4 border-purple-500">
+                <div class="text-2xl font-bold text-purple-400 mb-2">2</div>
+                <p class="text-purple-300 font-semibold text-lg">Associate</p>
+              </div>
+              <div class="text-center p-4 bg-slate-900/50 rounded-lg border-l-4 border-pink-500">
+                <div class="text-2xl font-bold text-pink-400 mb-2">3</div>
+                <p class="text-pink-300 font-semibold text-lg">Ask</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Guidelines -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-slate-800/70 border-2 border-orange-500/40 rounded-xl p-5">
+              <h4 class="text-lg font-bold text-orange-400 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+                When Things Get Difficult
+              </h4>
+              <p class="text-slate-300 leading-relaxed">
+                If the conversation becomes difficult or emotional, zoom out. Reset the frame. Use a higher level example. Create perspective again.
+              </p>
+            </div>
+
+            <div class="bg-slate-800/70 border-2 border-red-500/40 rounded-xl p-5">
+              <h4 class="text-lg font-bold text-red-400 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                Never Assume
+              </h4>
+              <p class="text-slate-300 leading-relaxed">
+                Never assume anything. Assumptions create mistakes.
+              </p>
+            </div>
+
+            <div class="bg-slate-800/70 border-2 border-green-500/40 rounded-xl p-5">
+              <h4 class="text-lg font-bold text-green-400 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Stay Curious & Respectful
+              </h4>
+              <p class="text-slate-300 leading-relaxed">
+                Stay curious. Treat every person with respect. Build rapport.
+              </p>
+            </div>
+
+            <div class="bg-slate-800/70 border-2 border-yellow-500/40 rounded-xl p-5">
+              <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Stay Consistent
+              </h4>
+              <p class="text-slate-300 leading-relaxed">
+                Do not quit on a conversation early. Stay consistent and show you care.
+              </p>
+            </div>
+          </div>
+
+          <!-- Final Insight -->
+          <div class="bg-gradient-to-r from-emerald-800/50 to-teal-800/50 border-2 border-emerald-400/50 rounded-xl p-6">
+            <h4 class="text-lg font-bold text-white mb-3 text-center">The Art of Questioning</h4>
+            <p class="text-slate-200 leading-relaxed text-center">
+              Ask questions where you already understand the likely answer.
+            </p>
+            <p class="text-slate-300 leading-relaxed text-center mt-2 italic">
+              It guides the prospect toward clarity without forcing the direction.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- LinkedIn Scripts Dashboard -->
       <div id="section-dashboard" class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-6 md:p-8 mb-6">
         <h1 class="text-3xl font-bold text-white mb-2">LinkedIn Scripts Dashboard</h1>
@@ -2197,6 +2321,20 @@ Might have some insights worth sharing with you.`}}</div>
           class="relative px-4 py-2 text-sm font-medium hover:text-purple-400 hover:bg-purple-500/10 rounded-lg transition-colors text-slate-300 whitespace-nowrap"
         >
           Dashboard
+        </button>
+
+        <button
+          @click="jumpToSection('section-questions')"
+          class="relative px-4 py-2 text-sm font-medium hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors text-slate-300 whitespace-nowrap"
+        >
+          Questions
+        </button>
+
+        <button
+          @click="jumpToSection('section-principles')"
+          class="relative px-4 py-2 text-sm font-medium hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors text-slate-300 whitespace-nowrap"
+        >
+          Core Principles
         </button>
 
         <button
