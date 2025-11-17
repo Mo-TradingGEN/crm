@@ -2059,7 +2059,7 @@ Might have some insights worth sharing with you.`}}</div>
     <transition name="slide-right">
       <div
         v-if="showResearchSidebar"
-        class="fixed right-0 top-0 h-screen w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl overflow-y-auto z-40 border-l-2 border-purple-500/30"
+        class="fixed right-0 top-16 h-[calc(100vh-4rem)] w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl overflow-y-auto z-40 border-l-2 border-purple-500/30"
       >
         <!-- Header -->
         <div class="sticky top-0 bg-slate-900/95 backdrop-blur border-b border-slate-700 p-6 flex items-center justify-between z-10">
@@ -2357,15 +2357,33 @@ Might have some insights worth sharing with you.`}}</div>
         >
           Persona Scripts
         </button>
+
+        <!-- User Info & Logout -->
+        <div class="ml-auto flex items-center gap-3">
+          <span v-if="currentUser" class="text-sm text-slate-400 hidden md:inline">
+            {{ currentUser.displayName }}
+          </span>
+          <button
+            @click="handleLogout"
+            class="px-4 py-2 text-sm font-medium bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-lg transition-colors whitespace-nowrap border border-red-500/30 flex items-center gap-2"
+            title="Logout"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
 import { personas as personasImport, generalMessages, objections, meetingFlow } from './data/scripts.js'
 import { knowledgeBase, getAIContext } from './data/knowledge-base.js'
+import { logout, getSession } from './services/auth.js'
 
 export default {
   name: 'App',
@@ -2390,6 +2408,20 @@ export default {
     const generatedColdEmail = ref('')
     const showKnowledgeBase = ref(false)
     
+    // Current user session
+    const currentUser = ref(null)
+    
+    // Load current user on mount
+    onMounted(() => {
+      currentUser.value = getSession()
+    })
+    
+    // Logout handler
+    const handleLogout = () => {
+      logout()
+      window.location.reload()
+    }
+    
     // Make personas reactive so Vue detects changes
     const personas = reactive(JSON.parse(JSON.stringify(personasImport)))
     
@@ -2405,15 +2437,17 @@ export default {
       currentStatus: ''
     })
 
-    // Load saved research data on mount
+    // Load saved research data on mount - DISABLED: No pre-filled values
     const loadResearchData = () => {
-      const saved = localStorage.getItem('crm-research-data')
-      if (saved) {
-        try {
-          researchData.value = JSON.parse(saved)
-        } catch (e) {
-          console.error('Failed to load research data:', e)
-        }
+      // Clear any existing saved research data to prevent pre-filling
+      localStorage.removeItem('crm-research-data')
+      // Always start with empty fields
+      researchData.value = {
+        hooks: '',
+        whereHangout: '',
+        whoHangout: '',
+        dreamLife: '',
+        currentStatus: ''
       }
     }
 
@@ -2498,7 +2532,7 @@ export default {
     const stageCustomInstructions = ref({})
     const processingStage = ref(null)
     const saveClientName = ref('')
-    const showResearchSidebar = ref(false)
+    const showResearchSidebar = ref(true)
     const savedResearchList = ref([])
 
     // LinkedIn Outreach Templates
@@ -3575,7 +3609,9 @@ Format: Subject line, then email body.`
       getActiveClass,
       getPersonaBackground,
       addMeme,
-      removeMeme
+      removeMeme,
+      currentUser,
+      handleLogout
     }
   }
 }
