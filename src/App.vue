@@ -369,13 +369,14 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
               </svg>
-              My Social Links
+              Resources to Help You Learn Faster
             </button>
           </div>
           
           <!-- Social Links Dropdown -->
           <transition name="expand">
             <div v-if="showSocials" class="mt-4">
+              <h3 class="text-xl font-bold text-white mb-4 text-center">Resources to Help You Learn Faster</h3>
               <!-- Copy All Button -->
               <button
                 @click="copyAllSocialLinks"
@@ -2565,48 +2566,56 @@ export default {
 
     const socialLinks = [
       {
-        text: 'Want to protect and grow your Capital? Go HERE:',
+        text: 'Want to protect and grow your capital?',
         url: 'https://sentientinstitutes.com/',
-        formatted: 'Want to protect and grow your Capital? Go HERE: https://sentientinstitutes.com/'
+        formatted: 'Want to protect and grow your capital?\n\nGo here: https://sentientinstitutes.com/'
       },
       {
-        text: 'Want to see how I analyse Stock? Go HERE:',
+        text: 'Want to see how I analyse the market?',
         url: 'https://www.tradingview.com/u/Risk_Adj_Return/',
-        formatted: 'Want to see how I analyse Stock? Go HERE: https://www.tradingview.com/u/Risk_Adj_Return/'
+        formatted: 'Want to see how I analyse the market?\n\nGo here: https://www.tradingview.com/u/Risk_Adj_Return/'
       },
       {
-        text: 'Want to see how psychology influences your Trading? Go HERE:',
+        text: 'Want to understand how psychology affects your decisions?',
         url: 'https://www.youtube.com/watch?v=vNR74ucQ7_I&list=PLuDG8HGO8_ajxZLMoZK0VZDK48LKlUxAa',
-        formatted: 'Want to see how psychology influences your Trading? Go HERE: https://www.youtube.com/watch?v=vNR74ucQ7_I&list=PLuDG8HGO8_ajxZLMoZK0VZDK48LKlUxAa'
+        formatted: 'Want to understand how psychology affects your decisions?\n\nGo here: https://www.youtube.com/watch?v=vNR74ucQ7_I&list=PLuDG8HGO8_ajxZLMoZK0VZDK48LKlUxAa'
       },
       {
-        text: 'If you want to understand the Stock market and trading truly! Go Here:',
+        text: 'Want the fundamentals of the stock market explained clearly?',
         url: 'https://drive.google.com/file/d/18mbkWdqd2xv8XRqZLwDRCKkrhXV2rjWW/view',
-        formatted: 'If you want to understand the Stock market and trading truly! Go Here: https://drive.google.com/file/d/18mbkWdqd2xv8XRqZLwDRCKkrhXV2rjWW/view'
+        formatted: 'Want the fundamentals of the stock market explained clearly?\n\nGo here: https://drive.google.com/file/d/18mbkWdqd2xv8XRqZLwDRCKkrhXV2rjWW/view'
       },
       {
-        text: 'Want to know ME better and why you should trust me? Go here',
+        text: 'Want to know who I am and why my system works?',
         url: 'https://sentientinstitutes.com/about-mentor',
-        formatted: 'Want to know ME better and why you should trust me? Go here https://sentientinstitutes.com/about-mentor'
+        formatted: 'Want to know who I am and why my system works?\n\nGo here: https://sentientinstitutes.com/about-mentor'
+      },
+      {
+        text: 'Want to learn how to judge a trading course or mentor properly?',
+        url: 'https://sentientinstitutes.com/compare',
+        formatted: 'Want to learn how to judge a trading course or mentor properly?\n\nGo here: https://sentientinstitutes.com/compare'
       }
     ]
 
-    const allSocialLinksFormatted = `Here are the links mentioned in the video
+    const allSocialLinksFormatted = `Resources to Help You Learn Faster
 
+Want to protect and grow your capital?
+Go here: https://sentientinstitutes.com/
 
-Want to protect and grow your Capital? Go HERE: https://sentientinstitutes.com/
+Want to see how I analyse the market?
+Go here: https://www.tradingview.com/u/Risk_Adj_Return/
 
+Want to understand how psychology affects your decisions?
+Go here: https://www.youtube.com/watch?v=vNR74ucQ7_I&list=PLuDG8HGO8_ajxZLMoZK0VZDK48LKlUxAa
 
-Want to see how I analyse Stock? Go HERE: https://www.tradingview.com/u/Risk_Adj_Return/
+Want the fundamentals of the stock market explained clearly?
+Go here: https://drive.google.com/file/d/18mbkWdqd2xv8XRqZLwDRCKkrhXV2rjWW/view
 
+Want to know who I am and why my system works?
+Go here: https://sentientinstitutes.com/about-mentor
 
-Want to see how psychology influences your Trading? Go HERE: https://www.youtube.com/watch?v=vNR74ucQ7_I&list=PLuDG8HGO8_ajxZLMoZK0VZDK48LKlUxAa
-
-
-If you want to understand the Stock market and trading truly! Go Here: https://drive.google.com/file/d/18mbkWdqd2xv8XRqZLwDRCKkrhXV2rjWW/view
-
-
-Want to know ME better and why you should trust me? Go here https://sentientinstitutes.com/about-mentor`
+Want to learn how to judge a trading course or mentor properly?
+Go here: https://sentientinstitutes.com/compare`
 
     const presets = {
       analyzeProfile: 'Analyze this LinkedIn profile deeply. Identify: their role, company, recent posts/activities, pain points related to capital management or trading, and any personal details that show they might need structured trading. Then write a cold email that references 2-3 specific things from their profile.',
