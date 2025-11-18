@@ -491,20 +491,157 @@
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-xl font-bold mb-3 text-white flex items-center gap-2">
-                  Elevator Pitch
-                  <span class="text-xs px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full border border-blue-400/30">Quick Intro</span>
-                </h3>
-                <div class="text-slate-100 leading-relaxed text-lg space-y-4">
-                  <p>
-                    I work with private capital owners who built, earned, or inherited wealth and want a professional way to protect and grow it. Most successful people fail in markets not because of intelligence, but because they rely on intuition in a domain that punishes intuition. Trading is anti-human without a documented, rule-based system.
-                  </p>
-                  <p>
-                    I bring more than ten thousand hours in live markets, years of testing, and zero conflicts of interest. Over twelve weeks, I help you build an institutional-grade trading system around your capital and your lifestyle, so you trade with clarity, precision, and full control instead of stress or guesswork.
-                  </p>
-                  <p class="font-semibold text-white">
-                    If you want to operate like an investor, not a gambler, you can apply for one of the five seats per quarter.
-                  </p>
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    Elevator Pitch
+                    <span class="text-xs px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full border border-blue-400/30">Quick Intro</span>
+                  </h3>
+                </div>
+                
+                <!-- Name Input -->
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-slate-300 mb-2">Name:</label>
+                  <input
+                    v-model="elevatorPitchName"
+                    type="text"
+                    placeholder="Enter name"
+                    class="w-full md:w-64 px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                
+                <!-- Version Selector -->
+                <div class="flex flex-wrap gap-2 mb-4 items-center">
+                  <button
+                    @click="selectedElevatorPitchVersion = 'original'"
+                    :class="selectedElevatorPitchVersion === 'original' ? 'bg-blue-500 text-white border-blue-400' : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:bg-slate-700'"
+                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors"
+                  >
+                    Original
+                  </button>
+                  <button
+                    @click="selectedElevatorPitchVersion = 'option1'"
+                    :class="selectedElevatorPitchVersion === 'option1' ? 'bg-blue-500 text-white border-blue-400' : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:bg-slate-700'"
+                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors"
+                  >
+                    Option 1 — Light Humor
+                  </button>
+                  <button
+                    @click="selectedElevatorPitchVersion = 'option2'"
+                    :class="selectedElevatorPitchVersion === 'option2' ? 'bg-blue-500 text-white border-blue-400' : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:bg-slate-700'"
+                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors"
+                  >
+                    Option 2 — Wealth-Friendly
+                  </button>
+                  <button
+                    @click="selectedElevatorPitchVersion = 'option3'"
+                    :class="selectedElevatorPitchVersion === 'option3' ? 'bg-blue-500 text-white border-blue-400' : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:bg-slate-700'"
+                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors"
+                  >
+                    Option 3 — Direct & Clean
+                  </button>
+                  <button
+                    @click="copyElevatorPitch"
+                    class="ml-auto px-4 py-1.5 text-sm rounded-lg border border-blue-400 bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 transition-colors flex items-center gap-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+
+                <!-- Version Content -->
+                <div class="text-slate-100 leading-relaxed text-base">
+                  <!-- Original Version -->
+                  <div v-if="selectedElevatorPitchVersion === 'original'" class="space-y-4">
+                    <p>
+                      I work with private capital owners who built, earned, or inherited wealth and want a professional way to protect and grow it. Most successful people fail in markets not because of intelligence, but because they rely on intuition in a domain that punishes intuition. Trading is anti-human without a documented, rule-based system.
+                    </p>
+                    <p>
+                      I bring more than ten thousand hours in live markets, years of testing, and zero conflicts of interest. Over twelve weeks, I help you build an institutional-grade trading system around your capital and your lifestyle, so you trade with clarity, precision, and full control instead of stress or guesswork.
+                    </p>
+                    <p class="font-semibold text-white">
+                      If you want to operate like an investor, not a gambler, you can apply for one of the five seats per quarter.
+                    </p>
+                  </div>
+
+                  <!-- Option 1: Light, Intelligent Humor -->
+                  <div v-if="selectedElevatorPitchVersion === 'option1'" class="space-y-3">
+                    <p class="text-slate-300 italic mb-4">
+                      Best for: operators & ex-founders
+                    </p>
+                    <p>
+                      Hey {{ elevatorPitchName || 'Name' }},
+                    </p>
+                    <p>
+                      if we ever end up on the wrong side of the market together, at least we can blame the market mood swings, not each other.
+                    </p>
+                    <p>
+                      Quick note on what I actually do:
+                    </p>
+                    <p>
+                      I work with private capital owners who built, earned, or inherited their wealth and want a professional, structured way to protect it and grow it. Most smart people get punished in markets not because they lack intelligence, but because they rely on intuition in a domain that rewards structure, not instinct.
+                    </p>
+                    <p>
+                      I bring ten thousand hours in live markets and zero conflicts of interest. In twelve weeks, we build an institutional-grade trading system around your capital and lifestyle, so you operate with clarity and precision instead of stress or guesswork.
+                    </p>
+                    <p>
+                      If you ever cross paths with someone who's wrestling with this problem and wants to explore whether a structured model makes sense for their situation, feel free to point them my way.
+                    </p>
+                    <p>
+                      Happy to share more.
+                    </p>
+                  </div>
+
+                  <!-- Option 2: Wealth-friendly humor, subtle authority -->
+                  <div v-if="selectedElevatorPitchVersion === 'option2'" class="space-y-3">
+                    <p class="text-slate-300 italic mb-4">
+                      Best for: inherited wealth, family-office aligned
+                    </p>
+                    <p>
+                      Hey {{ elevatorPitchName || 'Name' }},
+                    </p>
+                    <p>
+                      don't worry, I'm not here to sell you the next magic indicator. I'm allergic to those.
+                    </p>
+                    <p>
+                      Here's the short version of what I do:
+                    </p>
+                    <p>
+                      I help private capital owners who built, earned, or inherited meaningful wealth and want a professional, rule-based way to protect it. Most people get hurt in markets because they use business intuition where the market demands structure. Trading is anti-human without a documented system.
+                    </p>
+                    <p>
+                      Across ten thousand hours in the market I've built a twelve-week process that gives you a clear, repeatable operating system around timing, risk, and execution, so you stay in control of your wealth instead of reacting to markets.
+                    </p>
+                    <p>
+                      If you ever know someone who might want to explore whether this approach fits their situation, I'm always happy to share more.
+                    </p>
+                  </div>
+
+                  <!-- Option 3: Direct, clean, no-nonsense -->
+                  <div v-if="selectedElevatorPitchVersion === 'option3'" class="space-y-3">
+                    <p class="text-slate-300 italic mb-4">
+                      Best for: high-performers & finance pros
+                    </p>
+                    <p>
+                      Hey {{ elevatorPitchName || 'Name' }},
+                    </p>
+                    <p>
+                      promise I'm not here with a pitch or a crystal ball, those don't work anyway.
+                    </p>
+                    <p>
+                      Here's what I actually do:
+                    </p>
+                    <p>
+                      I work with private capital owners who built, earned, or inherited wealth and want a structured, institutional way to protect and compound it. Most smart individuals struggle in markets because they rely on feel, intuition, and inconsistent routines. Markets punish that.
+                    </p>
+                    <p>
+                      Over twelve weeks, I help you install a documented, rule-based system around your capital so every decision becomes clear, controlled, and repeatable.
+                    </p>
+                    <p>
+                      If you ever meet someone who's trying to get a grip on their trading or wants a professional structure around their capital, feel free to point them my way. Happy to share resources first.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2419,6 +2556,8 @@ export default {
     const activeTab = ref('personas')
     const showToast = ref(false)
     const showFullPitch = ref(false)
+    const selectedElevatorPitchVersion = ref('original')
+    const elevatorPitchName = ref('')
     const memes = ref([''])
     const linkedinProfileData = ref('')
     const selectedModel = ref('llama3.2:3b')  // Fast 3B model for RTX 2080
@@ -2843,6 +2982,59 @@ Mohamad Ali`
       } catch (err) {
         console.error('Failed to copy:', err)
       }
+    }
+
+    const copyElevatorPitch = async () => {
+      const name = elevatorPitchName.value || 'Name'
+      let pitchText = ''
+
+      if (selectedElevatorPitchVersion.value === 'original') {
+        pitchText = `I work with private capital owners who built, earned, or inherited wealth and want a professional way to protect and grow it. Most successful people fail in markets not because of intelligence, but because they rely on intuition in a domain that punishes intuition. Trading is anti-human without a documented, rule-based system.
+
+I bring more than ten thousand hours in live markets, years of testing, and zero conflicts of interest. Over twelve weeks, I help you build an institutional-grade trading system around your capital and your lifestyle, so you trade with clarity, precision, and full control instead of stress or guesswork.
+
+If you want to operate like an investor, not a gambler, you can apply for one of the five seats per quarter.`
+      } else if (selectedElevatorPitchVersion.value === 'option1') {
+        pitchText = `Hey ${name},
+
+if we ever end up on the wrong side of the market together, at least we can blame the market mood swings, not each other.
+
+Quick note on what I actually do:
+
+I work with private capital owners who built, earned, or inherited their wealth and want a professional, structured way to protect it and grow it. Most smart people get punished in markets not because they lack intelligence, but because they rely on intuition in a domain that rewards structure, not instinct.
+
+I bring ten thousand hours in live markets and zero conflicts of interest. In twelve weeks, we build an institutional-grade trading system around your capital and lifestyle, so you operate with clarity and precision instead of stress or guesswork.
+
+If you ever cross paths with someone who's wrestling with this problem and wants to explore whether a structured model makes sense for their situation, feel free to point them my way.
+
+Happy to share more.`
+      } else if (selectedElevatorPitchVersion.value === 'option2') {
+        pitchText = `Hey ${name},
+
+don't worry, I'm not here to sell you the next magic indicator. I'm allergic to those.
+
+Here's the short version of what I do:
+
+I help private capital owners who built, earned, or inherited meaningful wealth and want a professional, rule-based way to protect it. Most people get hurt in markets because they use business intuition where the market demands structure. Trading is anti-human without a documented system.
+
+Across ten thousand hours in the market I've built a twelve-week process that gives you a clear, repeatable operating system around timing, risk, and execution, so you stay in control of your wealth instead of reacting to markets.
+
+If you ever know someone who might want to explore whether this approach fits their situation, I'm always happy to share more.`
+      } else if (selectedElevatorPitchVersion.value === 'option3') {
+        pitchText = `Hey ${name},
+
+promise I'm not here with a pitch or a crystal ball, those don't work anyway.
+
+Here's what I actually do:
+
+I work with private capital owners who built, earned, or inherited wealth and want a structured, institutional way to protect and compound it. Most smart individuals struggle in markets because they rely on feel, intuition, and inconsistent routines. Markets punish that.
+
+Over twelve weeks, I help you install a documented, rule-based system around your capital so every decision becomes clear, controlled, and repeatable.
+
+If you ever meet someone who's trying to get a grip on their trading or wants a professional structure around their capital, feel free to point them my way. Happy to share resources first.`
+      }
+
+      await copyToClipboard(pitchText)
     }
 
     // LinkedIn Outreach Methods
@@ -3577,6 +3769,8 @@ Format: Subject line, then email body.`
       activeTab,
       showToast,
       showFullPitch,
+      selectedElevatorPitchVersion,
+      elevatorPitchName,
       memes,
       linkedinProfileData,
       selectedModel,
@@ -3613,6 +3807,7 @@ Format: Subject line, then email body.`
       extractNameFromProfile,
       replaceNames,
       copyToClipboard,
+      copyElevatorPitch,
       copyTemplate,
       scrollToProfile,
       jumpToSection,
